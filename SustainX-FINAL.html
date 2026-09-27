@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SustainX — Unified Energy Intelligence</title>
+<style>
+:root{--bg:#07100e;--panel:#0d1815;--panel2:#101e1a;--line:#23352e;--text:#edf6f1;--muted:#8fa39a;--cyan:#69ddd1;--yellow:#e8c75e;--red:#ef7777;--green:#69d7a4;--pri:#f2c94c;--card:#10201b;--bd:#2c4237}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 75% 5%,#17322b 0,#07100e 38%);color:var(--text);font:14px/1.5 Arial,Segoe UI,system-ui,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.hidden,.hide{display:none!important}
+.login{position:fixed;inset:0;background:#050b09;display:grid;place-items:center;z-index:9999;padding:20px}
+.login{background:linear-gradient(135deg,#eef3f5 0%,#f7f9fa 48%,#dfe8eb 100%);font-family:Arial,Segoe UI,sans-serif;color:#26363d}
+.utility-shell{width:min(1080px,96vw);background:#fff;border-radius:5px;box-shadow:0 18px 55px rgba(0,35,55,.18);overflow:hidden;border:1px solid #cbd6da}
+.utility-top{height:76px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px}
+.utility-logo{display:flex;align-items:center;gap:13px}.utility-logo strong{display:block;color:#174d68;font-size:18px}.utility-logo span{display:block;color:#6b7d84;font-size:11px;margin-top:3px}
+.utility-emblem{width:43px;height:43px;border-radius:50%;background:#176789;color:#fff;display:grid;place-items:center;font-size:21px;border:4px solid #dcecf2}
+.portal-label{font-size:10px;color:#70838b;letter-spacing:.08em;font-weight:800}
+.utility-line{height:4px;background:linear-gradient(90deg,#0d5f7c,#2b8da3,#f2bd39)}
+.utility-content{min-height:490px;display:grid;grid-template-columns:1fr 410px;gap:30px;padding:48px 60px;background:linear-gradient(120deg,#f5f9fa,#fff)}
+.portal-welcome{padding:40px 15px}.portal-badge{display:inline-block;padding:6px 10px;border-radius:3px;background:#e7f2f6;color:#176789;font-size:10px;font-weight:800;letter-spacing:.08em}.portal-welcome h1{font-size:45px;line-height:1.08;margin:22px 0 15px;color:#173f50}.portal-welcome h1 span{color:#0c7893}.portal-welcome p{max-width:520px;color:#65777e;font-size:15px;line-height:1.7}.portal-links{margin-top:35px;color:#55717d;font-size:11px;display:flex;gap:9px;flex-wrap:wrap}
+.utility-login-card{background:#fff;border:1px solid #d7e0e3;border-radius:6px;padding:27px 29px;box-shadow:0 8px 28px rgba(24,65,80,.10);align-self:center}
+.card-title{display:flex;gap:12px;align-items:center;margin-bottom:20px}.login-icon{width:42px;height:42px;border-radius:5px;background:#eaf4f7;display:grid;place-items:center}.card-title h2{margin:0;color:#214b5d;font-size:22px}.card-title p{margin:3px 0 0;color:#819097;font-size:11px}
+.utility-login-card label{color:#536a73;font-weight:700;margin:13px 0 6px}.utility-login-card select,.utility-login-card input{border:1px solid #cbd7dc;background:#fff;color:#31464f;border-radius:3px;padding:11px 12px}.input-wrap{display:flex;align-items:center;border:1px solid #cbd7dc;border-radius:3px;background:#fff}.input-wrap span{padding-left:11px;opacity:.65}.input-wrap input{border:0!important;flex:1}
+.login-options{display:flex;justify-content:space-between;align-items:center;margin-top:11px;font-size:11px}.login-options a{color:#14708b;text-decoration:none}.remember{display:flex!important;align-items:center;gap:5px!important;margin:0!important;text-transform:none!important;font-weight:400!important}.remember input{width:auto}
+.utility-primary{background:#176789!important;color:#fff!important;border-radius:3px!important;margin-top:18px!important;letter-spacing:.05em}.utility-primary:hover{background:#0f5874!important}
+.demo-box{margin-top:14px;padding:10px;background:#f3f7f8;border:1px solid #dde7ea;border-radius:3px;display:grid;gap:3px;font-size:10px;color:#718188}.demo-box b{color:#45616c}.demo-box strong{color:#176789}
+.utility-footer{display:flex;justify-content:space-between;padding:14px 30px;border-top:1px solid #e0e6e8;color:#829097;font-size:10px}.demo-disclaimer{text-align:center;background:#f1f5f6;padding:8px;color:#87959a;font-size:9px}
+@media(max-width:800px){.utility-content{grid-template-columns:1fr;padding:25px}.portal-welcome{padding:10px}.portal-welcome h1{font-size:35px}.utility-login-card{max-width:480px;width:100%;margin:auto}.utility-footer{flex-direction:column;gap:6px}}
+.loginbox{width:min(430px,100%);padding:32px;background:#0d1815;border:1px solid #294139;border-radius:20px;box-shadow:0 30px 90px #000}
+.brand{font-weight:900;font-size:22px;letter-spacing:.08em}.brand span{color:var(--cyan)}.login h1{font-size:24px;margin:22px 0 4px}.login p{color:var(--muted)}
+label{display:block;color:#a9b9b1;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 7px}
+input,select{width:100%;padding:10px 12px;border-radius:9px;border:1px solid #2a4037;background:#08110f;color:var(--text);outline:none}input:focus,select:focus{border-color:var(--cyan)}
+.primary,.bp{width:100%;margin-top:18px;padding:12px;border:0;border-radius:9px;background:var(--cyan);color:#06110e;font-weight:800}.err{height:20px;color:#ff8c8c;margin-top:9px;font-size:12px}
+.top{position:sticky;top:0;z-index:1000;background:rgba(7,16,14,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 22px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.top nav{display:flex;gap:10px;flex:1;flex-wrap:wrap}.top nav a{color:#b8c9c1;text-decoration:none;font-size:13px;padding:7px 9px;border-radius:8px;cursor:pointer}.top nav a:hover,.top nav a.on{color:var(--cyan);background:#12241f}
+.badge{font-size:10px;border:1px solid #315047;padding:5px 8px;border-radius:99px;color:var(--cyan)}
+.wrap{max-width:1250px;margin:auto;padding:24px}.hero{padding:28px 0 20px}.eyebrow{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:.12em}.hero h1{font-size:clamp(30px,5vw,58px);line-height:1.02;margin:10px 0}.hero p{max-width:850px;color:#a8b8b1;font-size:16px}
+.section{padding:25px 0}.sectionhead{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:15px}.section h2{font-size:25px;margin:5px 0}.muted,.mf{color:var(--muted)}.mf{font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:linear-gradient(145deg,#10201b,#0b1512);border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:12px}.k{font-size:10px;color:#8fa49a;text-transform:uppercase;letter-spacing:.08em}.v,.big{font-size:25px;font-weight:850;margin-top:5px}.s{font-size:11px;color:#84958e;margin-top:3px}
+.panel{background:#0b1512;border:1px solid var(--line);border-radius:16px;padding:17px;margin-top:14px}.filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:720px}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid #1d2d27;font-size:12px}th{color:#8da198;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+.pill,.badge2{padding:4px 8px;border-radius:99px;background:#18251f;color:#b9c8c1;font-size:10px;border:1px solid #315047}.good{color:var(--green)}.watch{color:var(--yellow)}.risk{color:var(--red)}
+.offline-map{background:#111d19;border:1px solid var(--line);border-radius:17px;overflow:hidden}.mapbar{padding:12px 14px;background:#0a1311;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.mapactions{display:flex;gap:5px}.mapactions button{background:#16251f;color:#dce9e3;border:1px solid #2b4037;border-radius:7px;padding:5px 10px}.mapcanvas{height:570px;overflow:hidden;background:#13231f}.mapcanvas svg{width:100%;height:100%;display:block}.world{transform-origin:500px 325px;transition:.18s}.node{cursor:pointer}.node text{fill:#e7f1ec;font-size:11px;font-weight:bold;letter-spacing:.05em;paint-order:stroke;stroke:#10201b;stroke-width:5px}.ring{fill:#66dcd2;fill-opacity:.12;stroke:#66dcd2;stroke-width:2}.dot{fill:#70e5d9;stroke:#effffb;stroke-width:2}.node.watch .ring{stroke:var(--yellow)}.node.watch .dot{fill:var(--yellow)}.node.risk .ring{stroke:var(--red)}.node.risk .dot{fill:var(--red)}.node.selected .ring{stroke:#fff;stroke-width:4;fill:#fff3}.legend{padding:10px 14px;display:flex;flex-wrap:wrap;gap:15px;color:#91a29b;font-size:11px}.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.l1{background:var(--cyan)}.l2{background:var(--yellow)}.l3{background:var(--red)}
+.two{display:grid;grid-template-columns:1.3fr .7fr;gap:14px}.selected{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.smallcard{padding:12px;background:#101e19;border-radius:11px;border:1px solid #20342c}.smallcard b{display:block;font-size:19px;margin-top:3px}
+.districtmap{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}.district{padding:9px 5px;background:#101e19;border:1px solid #20342c;border-radius:7px;text-align:center;font-size:10px;color:#b9c8c0}.district.high{border-color:#7a4646}.district.med{border-color:#79652e}
+.bar{height:8px;background:#1a2923;border-radius:9px;overflow:hidden}.bar span,.bar i{display:block;height:100%;background:var(--cyan);border-radius:9px}
+.list{max-height:520px;overflow:auto}.row{display:flex;justify-content:space-between;padding:8px 10px;border-radius:8px;cursor:pointer}.row:hover,.row.sel{background:#16251f}
+.leafmap{height:500px;border-radius:14px;overflow:hidden}.alert{border-color:var(--red);background:#e5484d1a}.alert .big{color:var(--red)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:700}.btn.pri{background:var(--pri);color:#111}.btn.red{background:var(--red);color:#fff}.btn.out{background:none;border:1px solid var(--bd);color:var(--text)}
+#toast{position:fixed;bottom:20px;right:20px;background:var(--pri);color:#111;padding:12px 18px;border-radius:10px;display:none;z-index:2000}
+footer{padding:30px 0;color:#71817a;font-size:11px;border-top:1px solid var(--line);margin-top:30px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.districtmap{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:560px){.wrap{padding:16px}.grid{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.selected{grid-template-columns:repeat(2,1fr)}.mapcanvas{height:450px}.top nav{width:100%}}
+</style>
+</head>
+<body>
+
+<div class="login" id="login">
+  <div class="utility-shell">
+    <div class="utility-top">
+      <div class="utility-logo">
+        <div class="utility-emblem">⚡</div>
+        <div>
+          <strong>Tamil Nadu Electricity</strong>
+          <span>Distribution Portal</span>
+        </div>
+      </div>
+      <div class="portal-label">OFFICIAL-STYLE DEMO PORTAL</div>
+    </div>
+    <div class="utility-line"></div>
+
+    <div class="utility-content">
+      <div class="portal-welcome">
+        <div class="portal-badge">SUSTAINX ENERGY INTELLIGENCE</div>
+        <h1>Welcome to<br><span>SustainX</span></h1>
+        <p>Unified distribution intelligence for network monitoring, energy-loss analysis, outage management and consumer services.</p>
+        <div class="portal-links">
+          <span>Consumer Services</span><span>•</span><span>Distribution Monitoring</span><span>•</span><span>Energy Analytics</span>
+        </div>
+      </div>
+
+      <div class="utility-login-card">
+        <div class="card-title">
+          <div class="login-icon">🔐</div>
+          <div>
+            <h2>Portal Login</h2>
+            <p>Sign in to access SustainX services</p>
+          </div>
+        </div>
+
+        <label>Login Type</label>
+        <select id="loginType">
+          <option>Employee / Administrator</option>
+          <option>Consumer</option>
+          <option>Field Engineer</option>
+        </select>
+
+        <label>User ID / Consumer Number</label>
+        <div class="input-wrap"><span>👤</span><input id="uid" value="DEMO-ADMIN" autocomplete="username" placeholder="Enter User ID"></div>
+
+        <label>Password</label>
+        <div class="input-wrap"><span>🔒</span><input id="pwd" value="gridtrace" type="password" autocomplete="current-password" placeholder="Enter password"></div>
+
+        <div class="login-options">
+          <label class="remember"><input type="checkbox" checked> Remember me</label>
+          <a href="#" onclick="toast('Demo portal: use the credentials shown below');return false">Forgot Password?</a>
+        </div>
+
+        <button class="primary utility-primary" id="signin">LOGIN</button>
+        <div class="err" id="loginerr"></div>
+
+        <div class="demo-box">
+          <b>Demo Access</b>
+          <span>Admin ID: <strong>DEMO-ADMIN</strong></span>
+          <span>Password: <strong>gridtrace</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="utility-footer">
+      <span>© SustainX Energy Intelligence</span>
+      <span>Help &nbsp; | &nbsp; Privacy &nbsp; | &nbsp; Terms</span>
+    </div>
+    <div class="demo-disclaimer">This is a prototype interface inspired by public utility-portal layouts. It is not an official TANGEDCO/TNPDCL website.</div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+<header class="top">
+  <div class="brand">SUSTAIN<span>X</span></div>
+  <nav>
+    <a data-page="state">State</a><a data-page="dashboard">Dashboard</a><a data-page="map">Grid Map</a>
+    <a data-page="mapping">Mapping Engine</a><a data-page="power">Power Cuts</a><a data-page="loss">Loss</a>
+    <a data-page="portal">Consumer Portal</a><a data-page="method">Method</a>
+  </nav>
+  <select id="lang" style="width:auto" aria-label="Language">
+<option value="0">English</option><option value="1">தமிழ்</option><option value="2">हिन्दी</option></select>
+  <span class="badge">UNIFIED • SYNTHETIC DEMO</span>
+</header>
+
+<main class="wrap">
+<section id="state" class="page section">
+  <div class="hero"><div class="eyebrow">TAMIL NADU DISTRIBUTION INTELLIGENCE</div><h1>See where energy disappears.<br>Trace the network behind it.</h1><p>GridTrace infers consumer-to-transformer relationships from utility signals, while Energy Echo connects outages, billing and transformer energy accounting into one operational view.</p></div>
+  <div class="sectionhead"><div><div class="eyebrow">STATE COMMAND CENTER</div><h2>Tamil Nadu overview</h2></div><span class="badge">38 DISTRICTS</span></div>
+  <div class="grid">
+    <div class="card"><div class="k">Unexplained loss</div><div class="v">8.1%</div><div class="s">Synthetic network estimate</div></div>
+    <div class="card"><div class="k">Monthly shutdown</div><div class="v">2.7 h</div><div class="s">Average monitored area</div></div>
+    <div class="card"><div class="k">Service availability</div><div class="v">96.4%</div><div class="s">Synthetic availability index</div></div>
+    <div class="card"><div class="k">Mapping confidence</div><div class="v">94.2%</div><div class="s">Consumer → transformer</div></div>
+  </div>
+  <div class="panel"><div class="sectionhead"><div><h3>38-district network view</h3><span class="muted">Click a district to filter the table.</span></div><input id="districtSearch" placeholder="Search district..." style="max-width:260px"></div><div class="districtmap" id="districtGrid"></div></div>
+  <div class="panel tablewrap"><table><thead><tr><th>District</th><th>Unexplained loss</th><th>Shutdown</th><th>Availability</th><th>Signal</th></tr></thead><tbody id="districtTable"></tbody></table></div>
+</section>
+
+<section id="dashboard" class="page section hide">
+  <div class="sectionhead"><div><div class="eyebrow">ENERGY ECHO</div><h2>Grid Loss Dashboard</h2><p class="muted">Transformer loss, causes, financial impact and live grid status.</p></div></div>
+  <div class="grid" id="fin"></div>
+  <div class="card"><div class="sectionhead"><h2 data-t="liveMap"></h2><div><label style="display:inline"><input type="checkbox" id="heat" checked style="width:auto"> <span data-t="heatmap"></span></label> &nbsp; <label style="display:inline"><input type="checkbox" id="out" checked style="width:auto"> <span data-t="outages"></span></label></div></div>
+    <div id="map1" class="leafmap"></div><p class="mf">🟢 OK · 🔴 Theft · 🟡 Technical · 🔵 Meter · ⚫ Outage — red dashed lines = consumers on dead feeder</p>
+  </div>
+  <div class="card"><h2 data-t="ranking"></h2><div class="tablewrap"><table id="rank"></table></div></div>
+</section>
+
+<section id="map" class="page section hide">
+  <div class="sectionhead"><div><div class="eyebrow">CHENNAI NETWORK</div><h2>Offline area intelligence map</h2><p class="muted">Self-contained schematic map from the GridTrace prototype. No map API or external tile data.</p></div></div>
+  <div class="offline-map"><div class="mapbar"><b>CHENNAI • GRIDTRACE DEMO NETWORK</b><div class="mapactions"><button id="zin">+</button><button id="zreset">Reset</button><button id="zout">−</button></div></div>
+    <div class="mapcanvas"><svg viewBox="0 0 1000 650" id="svg"><defs><linearGradient id="terrain" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1d3029"/><stop offset=".55" stop-color="#263a31"/><stop offset="1" stop-color="#15231f"/></linearGradient></defs>
+      <g class="world" id="world"><rect width="1000" height="650" fill="url(#terrain)"/><path d="M800 0C770 90 825 150 800 230C775 315 840 380 805 460C780 535 830 600 800 650H1000V0Z" fill="#10303b"/><path d="M800 0C770 90 825 150 800 230C775 315 840 380 805 460C780 535 830 600 800 650" fill="none" stroke="#528a91" stroke-width="4"/>
+      <g fill="none" stroke="#51655b" stroke-width="2" opacity=".5"><path d="M80 100L730 140 760 250 90 210Z"/><path d="M70 220L730 255 760 365 85 335Z"/><path d="M80 350L730 370 765 505 110 475Z"/><path d="M150 480L740 510 760 590 190 570Z"/><path d="M180 50L160 580"/><path d="M340 50L330 590"/><path d="M500 60L510 600"/><path d="M650 80L670 600"/></g>
+      <g fill="none" stroke="#8b9b8e" stroke-width="7" opacity=".65"><path d="M120 520C250 430 290 350 390 275C470 215 590 185 760 150"/><path d="M160 120C300 190 420 250 530 335C610 395 690 455 785 520"/><path d="M105 355C260 350 400 350 545 365C650 375 710 395 785 420"/></g>
+      <g fill="none" stroke="#55c7c0" stroke-width="2" stroke-dasharray="8 7" opacity=".7"><path d="M300 260L440 330 570 240 690 330"/><path d="M440 330L510 430 650 390"/><path d="M510 430L610 520 730 470"/></g><g id="nodes"></g>
+      <text x="850" y="600" fill="#a5bbb3" font-size="13">BAY OF BENGAL</text><text x="35" y="40" fill="#c1d0ca" font-size="14" font-weight="700">CHENNAI • OFFLINE GRIDTRACE</text></g></svg></div>
+    <div class="legend"><span><i class="l1"></i>Normal</span><span><i class="l2"></i>Power-cut/reliability watch</span><span><i class="l3"></i>Loss/voltage watch</span><span>Click an area</span></div>
+  </div>
+  <div class="panel"><div class="sectionhead"><div><div class="eyebrow">SELECTED AREA</div><h2 id="selName">Anna Nagar</h2></div><span id="selStatus" class="pill good">NORMAL</span></div>
+    <div class="selected"><div class="smallcard"><span class="k">Input energy</span><b id="si">1.91 GWh</b></div><div class="smallcard"><span class="k">Billed energy</span><b id="sb">1.78 GWh</b></div><div class="smallcard"><span class="k">Unexplained loss</span><b id="sl">6.8%</b></div><div class="smallcard"><span class="k">Consumers</span><b id="sc">1,360</b></div><div class="smallcard"><span class="k">Monthly shutdown</span><b id="ss">2.1 h</b></div><div class="smallcard"><span class="k">Voltage fluctuation</span><b id="sv">±4.5%</b></div><div class="smallcard"><span class="k">Mapping confidence</span><b id="sf">97%</b></div><div class="smallcard"><span class="k">Network signal</span><b id="sig">Stable</b></div></div>
+  </div>
+</section>
+
+<section id="mapping" class="page section hide">
+  <div class="sectionhead"><div><div class="eyebrow">ENERGY ECHO</div><h2>Consumer → Transformer Mapping Engine</h2></div></div>
+  <div class="grid" id="mstats"></div>
+  <div class="btnrow"><button class="btn pri" id="auto">✓ <span data-t="autoConfirm"></span></button><button class="btn red" id="field">🚐 <span data-t="sendField"></span></button></div>
+  <div class="two" style="margin-top:14px"><div class="card"><input id="q" placeholder="Search consumer…" style="width:100%;margin-bottom:10px"><div class="list" id="clist"></div></div><div class="card" id="detail"></div></div>
+</section>
+
+<section id="power" class="page section hide">
+  <div class="sectionhead"><div><div class="eyebrow">POWER CUTS</div><h2>Shutdown & outage command view</h2><p class="muted">Synthetic demonstration events.</p></div></div>
+  <div class="grid"><div class="card"><div class="k">Open / active cuts</div><div class="v">3</div><div class="s">Areas requiring attention</div></div><div class="card"><div class="k">Consumers affected</div><div class="v">8,420</div><div class="s">Open + scheduled events</div></div><div class="card"><div class="k">Scheduled cuts</div><div class="v">5</div><div class="s">Planned maintenance</div></div><div class="card"><div class="k">Avg restoration</div><div class="v">74 min</div><div class="s">Synthetic benchmark</div></div></div>
+  <div class="panel tablewrap"><table><thead><tr><th>Area</th><th>Start</th><th>Duration</th><th>Affected</th><th>Type</th><th>Cause</th><th>Status</th></tr></thead><tbody>
+  <tr><td>Adyar</td><td>18:20</td><td>1h 15m</td><td>1,840</td><td>Unplanned</td><td>Feeder fault</td><td class="good">Restored</td></tr><tr><td>Velachery</td><td>19:05</td><td>2h 10m</td><td>2,310</td><td>Maintenance</td><td>Feeder work</td><td class="risk">Open</td></tr><tr><td>Ambattur</td><td>16:40</td><td>48m</td><td>1,120</td><td>Unplanned</td><td>Transformer trip</td><td class="good">Restored</td></tr><tr><td>T. Nagar</td><td>21:15</td><td>1h 35m</td><td>980</td><td>Scheduled</td><td>Cable work</td><td class="watch">Scheduled</td></tr><tr><td>Anna Nagar</td><td>14:30</td><td>32m</td><td>760</td><td>Unplanned</td><td>Protection trip</td><td class="good">Restored</td></tr><tr><td>Guindy</td><td>11:10</td><td>1h 50m</td><td>1,410</td><td>Maintenance</td><td>Substation work</td><td class="risk">Open</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="loss" class="page section hide">
+  <div class="sectionhead"><div><div class="eyebrow">LOSS INTELLIGENCE</div><h2>Transformer energy accounting</h2></div></div>
+  <div class="panel tablewrap"><table><thead><tr><th>Transformer</th><th>Area</th><th>Input</th><th>Billed</th><th>Unexplained loss</th><th>Consumers</th><th>Shutdown</th><th>Mapping confidence</th></tr></thead><tbody>
+  <tr><td>ADY-TR-014</td><td>Adyar</td><td>1.82 GWh</td><td>1.69 GWh</td><td class="watch">7.1%</td><td>1,240</td><td>1.8 h</td><td>97%</td></tr><tr><td>VEL-TR-022</td><td>Velachery</td><td>2.14 GWh</td><td>1.91 GWh</td><td class="risk">10.7%</td><td>1,580</td><td>4.8 h</td><td>92%</td></tr><tr><td>AMB-TR-031</td><td>Ambattur</td><td>1.67 GWh</td><td>1.55 GWh</td><td class="watch">7.2%</td><td>1,090</td><td>3.2 h</td><td>95%</td></tr><tr><td>TNG-TR-009</td><td>T. Nagar</td><td>2.03 GWh</td><td>1.88 GWh</td><td class="watch">7.4%</td><td>1,420</td><td>2.7 h</td><td>96%</td></tr><tr><td>ANN-TR-017</td><td>Anna Nagar</td><td>1.91 GWh</td><td>1.78 GWh</td><td>6.8%</td><td>1,360</td><td>2.1 h</td><td>98%</td></tr><tr><td>GUI-TR-026</td><td>Guindy</td><td>2.31 GWh</td><td>2.08 GWh</td><td class="risk">10.0%</td><td>1,510</td><td>4.1 h</td><td>91%</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="portal" class="page section hide"><div id="pbody"></div></section>
+
+<section id="method" class="page section hide">
+  <div class="sectionhead"><div><div class="eyebrow">R&D METHOD</div><h2>How the unified system works</h2></div></div>
+  <div class="grid"><div class="card"><div class="k">01 · Detect</div><div class="s">Match synchronized outages and restoration patterns across consumer data.</div></div><div class="card"><div class="k">02 · Map</div><div class="s">Infer consumer → transformer relationships using correlation, geography and billing behavior.</div></div><div class="card"><div class="k">03 · Quantify</div><div class="s">Compare transformer input energy with billed energy and outage behavior.</div></div><div class="card"><div class="k">04 · Explain</div><div class="s">Separate likely technical loss, metering signals and commercial-risk indicators for investigation.</div></div></div>
+  <div class="panel"><h3>Demo disclaimer</h3><p class="muted">All figures, outage events, transformer values, district metrics and consumer records in this prototype are synthetic demonstration data. They are not live utility records.</p></div>
+</section>
+<footer>SustainX • Unified energy intelligence prototype • Synthetic demonstration data.</footer>
+</main>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ---------- GridTrace state/offline data ---------- */
+const DISTRICTS = [{"name": "Ariyalur", "loss": 7.2, "shutdown": 2.1, "availability": 96.8}, {"name": "Chengalpattu", "loss": 8.4, "shutdown": 2.8, "availability": 96.1}, {"name": "Chennai", "loss": 9.1, "shutdown": 3.4, "availability": 95.4}, {"name": "Coimbatore", "loss": 7.8, "shutdown": 2.4, "availability": 97.1}, {"name": "Cuddalore", "loss": 8.7, "shutdown": 3.0, "availability": 95.8}, {"name": "Dharmapuri", "loss": 7.5, "shutdown": 2.6, "availability": 96.4}, {"name": "Dindigul", "loss": 8.1, "shutdown": 2.7, "availability": 96.0}, {"name": "Erode", "loss": 7.4, "shutdown": 2.2, "availability": 97.0}, {"name": "Kallakurichi", "loss": 8.0, "shutdown": 2.5, "availability": 96.3}, {"name": "Kancheepuram", "loss": 8.6, "shutdown": 2.9, "availability": 95.9}, {"name": "Karur", "loss": 7.1, "shutdown": 2.0, "availability": 97.2}, {"name": "Krishnagiri", "loss": 7.9, "shutdown": 2.5, "availability": 96.5}, {"name": "Madurai", "loss": 8.5, "shutdown": 2.9, "availability": 95.7}, {"name": "Mayiladuthurai", "loss": 8.2, "shutdown": 2.8, "availability": 96.1}, {"name": "Nagapattinam", "loss": 9.0, "shutdown": 3.2, "availability": 95.2}, {"name": "Kanniyakumari", "loss": 7.0, "shutdown": 1.9, "availability": 97.4}, {"name": "Namakkal", "loss": 7.3, "shutdown": 2.2, "availability": 97.0}, {"name": "Perambalur", "loss": 7.6, "shutdown": 2.4, "availability": 96.6}, {"name": "Pudukkottai", "loss": 8.3, "shutdown": 2.7, "availability": 96.0}, {"name": "Ramanathapuram", "loss": 8.9, "shutdown": 3.1, "availability": 95.5}, {"name": "Ranipet", "loss": 8.0, "shutdown": 2.6, "availability": 96.3}, {"name": "Salem", "loss": 7.7, "shutdown": 2.4, "availability": 96.8}, {"name": "Sivaganga", "loss": 8.1, "shutdown": 2.6, "availability": 96.2}, {"name": "Tenkasi", "loss": 7.8, "shutdown": 2.5, "availability": 96.5}, {"name": "Thanjavur", "loss": 8.4, "shutdown": 2.8, "availability": 96.0}, {"name": "Theni", "loss": 7.2, "shutdown": 2.1, "availability": 97.1}, {"name": "Thoothukudi", "loss": 8.8, "shutdown": 3.0, "availability": 95.6}, {"name": "Tiruchirappalli", "loss": 8.0, "shutdown": 2.6, "availability": 96.4}, {"name": "Tirunelveli", "loss": 8.3, "shutdown": 2.7, "availability": 96.0}, {"name": "Tirupathur", "loss": 7.9, "shutdown": 2.5, "availability": 96.5}, {"name": "Tiruppur", "loss": 7.6, "shutdown": 2.3, "availability": 96.9}, {"name": "Tiruvallur", "loss": 8.9, "shutdown": 3.1, "availability": 95.6}, {"name": "Tiruvarur", "loss": 8.5, "shutdown": 2.9, "availability": 95.8}, {"name": "Tiruvannamalai", "loss": 8.0, "shutdown": 2.6, "availability": 96.3}, {"name": "The Nilgiris", "loss": 6.8, "shutdown": 1.8, "availability": 97.6}, {"name": "Vellore", "loss": 8.1, "shutdown": 2.6, "availability": 96.4}, {"name": "Viluppuram", "loss": 8.3, "shutdown": 2.7, "availability": 96.1}, {"name": "Virudhunagar", "loss": 8.2, "shutdown": 2.6, "availability": 96.2}];
+const AREAS = [{"name": "Anna Nagar", "status": "normal", "loss": 6.8, "shutdown": 2.1, "consumers": 1360, "voltage": 4.5, "input": 1.91, "billed": 1.78, "confidence": 97}, {"name": "T. Nagar", "status": "watch", "loss": 7.4, "shutdown": 2.7, "consumers": 1420, "voltage": 4.9, "input": 2.03, "billed": 1.88, "confidence": 96}, {"name": "Adyar", "status": "risk", "loss": 7.1, "shutdown": 3.6, "consumers": 1240, "voltage": 5.8, "input": 1.82, "billed": 1.69, "confidence": 97}, {"name": "Velachery", "status": "risk", "loss": 10.7, "shutdown": 4.8, "consumers": 1580, "voltage": 7.2, "input": 2.14, "billed": 1.91, "confidence": 92}, {"name": "Tambaram", "status": "normal", "loss": 6.2, "shutdown": 2.4, "consumers": 1110, "voltage": 4.3, "input": 1.56, "billed": 1.46, "confidence": 95}, {"name": "Ambattur", "status": "watch", "loss": 7.2, "shutdown": 3.2, "consumers": 1090, "voltage": 5.1, "input": 1.67, "billed": 1.55, "confidence": 95}, {"name": "Guindy", "status": "risk", "loss": 10.0, "shutdown": 4.1, "consumers": 1510, "voltage": 6.4, "input": 2.31, "billed": 2.08, "confidence": 91}, {"name": "Perambur", "status": "normal", "loss": 6.5, "shutdown": 2.0, "consumers": 980, "voltage": 4.1, "input": 1.42, "billed": 1.33, "confidence": 96}, {"name": "Royapuram", "status": "watch", "loss": 8.1, "shutdown": 3.0, "consumers": 1170, "voltage": 5.5, "input": 1.73, "billed": 1.59, "confidence": 94}];
+const $=id=>document.getElementById(id);
+
+function login(){
+  if($("uid").value.trim()==="DEMO-ADMIN" && $("pwd").value==="gridtrace"){
+    $("login").classList.add("hidden");$("app").classList.remove("hidden");sessionStorage.setItem("gridtraceOK","1");
+  } else $("loginerr").textContent="Incorrect credentials. Use DEMO-ADMIN / gridtrace.";
+}
+$("signin").onclick=login;
+["uid","pwd"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")login()}));
+if(sessionStorage.getItem("gridtraceOK")==="1"){$("login").classList.add("hidden");$("app").classList.remove("hidden")}
+
+function renderDistricts(q=""){
+ const f=DISTRICTS.filter(d=>d.name.toLowerCase().includes(q.toLowerCase()));
+ const sig=d=>d.loss>=8.5?t("investigate"):d.loss>=8?t("watch"):t("stable");
+ $("districtGrid").innerHTML=f.map(d=>`<button class="district ${d.loss>=8.5?"high":d.loss>=8?"med":""}" onclick="filterDistrict('${d.name}')">${d.name}</button>`).join("");
+ $("districtTable").innerHTML=f.map(d=>`<tr><td>${d.name}</td><td>${d.loss.toFixed(1)}%</td><td>${d.shutdown.toFixed(1)} h</td><td>${d.availability.toFixed(1)}%</td><td class="${d.loss>=8.5?"risk":d.loss>=8?"watch":"good"}">${sig(d)}</td></tr>`).join("");
+}
+function filterDistrict(n){$("districtSearch").value=n;renderDistricts(n)}
+$("districtSearch").oninput=e=>renderDistricts(e.target.value);
+
+const coords={"Anna Nagar":[360,210],"T. Nagar":[440,330],"Adyar":[610,430],"Velachery":[510,500],"Tambaram":[300,535],"Ambattur":[190,270],"Guindy":[400,390],"Perambur":[350,135],"Royapuram":[565,110]};
+function drawNodes(){
+ const ns="http://www.w3.org/2000/svg";$("nodes").innerHTML="";
+ AREAS.forEach(a=>{const g=document.createElementNS(ns,"g");g.setAttribute("class","node "+a.status);g.dataset.name=a.name;g.setAttribute("transform",`translate(${coords[a.name][0]} ${coords[a.name][1]})`);
+ g.innerHTML=`<circle class="ring" r="22"/><circle class="dot" r="9"/><text y="${coords[a.name][1]>470?42:-30}" text-anchor="middle">${a.name.toUpperCase()}</text>`;g.onclick=()=>selectArea(a.name);$("nodes").appendChild(g)});
+}
+function selectArea(name){
+ const a=AREAS.find(x=>x.name===name);if(!a)return;
+ document.querySelectorAll(".node").forEach(n=>n.classList.toggle("selected",n.dataset.name===name));
+ $("selName").textContent=a.name;$("si").textContent=a.input.toFixed(2)+" GWh";$("sb").textContent=a.billed.toFixed(2)+" GWh";$("sl").textContent=a.loss.toFixed(1)+"%";$("sc").textContent=a.consumers.toLocaleString();$("ss").textContent=a.shutdown.toFixed(1)+" h";$("sv").textContent="±"+a.voltage.toFixed(1)+"%";$("sf").textContent=a.confidence+"%";$("sig").textContent=a.status==="risk"?"Investigate":a.status==="watch"?"Watch":"Stable";$("selStatus").textContent=a.status.toUpperCase();$("selStatus").className="pill "+(a.status==="risk"?"risk":a.status==="watch"?"watch":"good");
+}
+let scale=1;function applyZoom(){$("world").style.transform=`scale(${scale})`}
+$("zin").onclick=()=>{scale=Math.min(2.2,scale+.2);applyZoom()};$("zout").onclick=()=>{scale=Math.max(.8,scale-.2);applyZoom()};$("zreset").onclick=()=>{scale=1;applyZoom()};
+
+/* ---------- Energy Echo engine/data ---------- */
+const D={
+title:["SustainX Energy Intelligence","SustainX ஆற்றல் நுண்ணறிவு","SustainX ऊर्जा इंटेलिजेंस"],
+state:["State","மாநிலம்","राज्य"],map:["Grid Map","மின் கட்டமைப்பு வரைபடம்","ग्रिड मानचित्र"],
+power:["Power Cuts","மின்தடை","बिजली कटौती"],loss:["Loss","இழப்பு","हानि"],method:["Method","செயல்முறை","विधि"],
+dashboard:["Loss Dashboard","இழப்பு டாஷ்போர்டு","हानि डैशबोर्ड"],mapping:["Mapping Engine","இணைப்பு இயந்திரம்","मैपिंग इंजन"],portal:["Consumer Login","நுகர்வோர் உள்நுழைவு","उपभोक्ता लॉगिन"],liveMap:["Live Grid Map","நேரடி மின் வரைபடம்","लाइव ग्रिड मानचित्र"],heatmap:["Loss heatmap","இழப்பு வெப்ப வரைபடம்","हानि हीटमैப்"],outages:["Live outages","நேரடி மின்தடை","लाइव आउटेज"],ranking:["Transformers ranked by unexplained loss","விளக்கமற்ற இழப்பின்படி டிரான்ஸ்பார்மர்கள்","अस्पष्ट हानि के अनुसार ट्रांसफार्मर"],theft:["Theft / Tampering","திருட்டு / சேதம்","चोरी / छेड़छाड़"],technical:["Technical Loss","தொழில்நுட்ப இழப்பு","तकनीकी हानि"],meter:["Meter Failure","மீட்டர் கோளாறு","मीटर खराबी"],normal:["Healthy","சீரானது","स्वस्थ"],finLoss:["Monthly financial loss","மாதாந்திர நிதி இழப்பு","मासिक वित्तीय हानि"],confidence:["Confidence","நம்பகத்தன்மை","विश्वास"],autoConfirm:["Auto-confirm >85%",">85% தானாக உறுதி",">85% स्वतः पुष्टि"],sendField:["Send <50% to field","<50% களப் பணிக்கு அனுப்பு","<50% फील्ड में भेजें"],login:["Login","உள்நுழை","लॉगिन"],logout:["Logout","வெளியேறு","लॉगआउट"],consumerNo:["Consumer number","நுகர்வோர் எண்","उपभोक्ता संख्या"],password:["Password","கடவுச்சொல்","पासवर्ड"],usage:["Your consumption","உங்கள் மின் பயன்பாடு","आपकी खपत"],currentBill:["Current bill","தற்போதைய கட்டணம்","वर्तमान बिल"],yourTx:["Your transformer","உங்கள் டிரான்ஸ்ஃபார்மர்","आपका ट्रांसफार्मर"],supply:["Supply status","மின் விநியோக நிலை","आपूर्ति स्थिति"],on:["Power ON","மின்சாரம் உள்ளது","बिजली चालू"],off:["Outage","மின்தடை","बिजली बंद"],input:["Input kWh","உள்ளீடு kWh","इनपुट kWh"],billed:["Billed kWh","பில் kWh","बिल kWh"],loss:["Loss","இழப்பு","हानि"],cause:["Root cause","மூல காரணம்","मूल कारण"],
+evidence:["Evidence","ஆதாரம்","साक्ष्य"],
+nightLoss:["Night loss","இரவு இழப்பு","रात्रि हानि"],
+load:["Load","சுமை","लोड"],
+peakI2R:["peak I²R","உச்ச I²R","पीक I²R"],
+zeroFlat:["zero/flat readings","பூஜ்யம்/மாறாத ரீடிங்குகள்","शून्य/स्थिर रीडिंग"],
+withinNorms:["Within norms","சாதாரண வரம்பில்","मानक सीमा में"],
+stable:["Stable","சீரானது","स्थिर"],
+watch:["Watch","கவனிப்பு","निगरानी"],
+investigate:["Investigate","ஆய்வு தேவை","जांच आवश्यक"]};
+let L_=Math.max(0,Math.min(2,Number(localStorage.lang||0)));const t=k=>(D[k]||[k])[L_];
+let s=42;const r=()=>(s=s*16807%2147483647,(s-1)/2147483646);
+const inr=n=>n>=1e5?"₹"+(n/1e5).toFixed(2)+" L":"₹"+Math.round(n).toLocaleString("en-IN");
+const RATE=6.5,COL={theft:"#dc2626",technical:"#eab308",meter:"#3b82f6",normal:"#22c55e"},DOT={theft:"🔴",technical:"🟡",meter:"🔵",normal:"🟢"};
+const AREAS2=["Adyar","T. Nagar","Velachery","Anna Nagar","Mylapore","Guindy","Porur","Tambaram","Kodambakkam","Saidapet","Perungudi","Ashok Nagar"];
+const NAMES=["Murugan","Lakshmi","Karthik","Priya","Senthil","Divya","Ravi","Meena","Arun","Kavitha","Suresh","Anitha","Vijay","Revathi","Ganesh","Deepa"];
+const TX=AREAS2.map((a,i)=>{const p=i%4,inp=Math.round(18000+r()*22000),lp=[4+r()*3,18+r()*12,11+r()*6,9+r()*6][p],b=Math.round(inp*(1-lp/100));return{id:"DT-"+(101+i),name:a+" DT",lat:13.04+(r()-.5)*.14,lng:80.23+(r()-.5)*.14,inp,b,loss:inp-b,lp:+lp.toFixed(1),cause:["normal","theft","technical","meter"][p],night:p==1?60+r()*20:25+r()*15,peak:p==2?55+r()*20:20+r()*15,zero:p==3?4+~~(r()*6):~~(r()*2),load:p==2?105+r()*25:50+r()*35,outage:i==2||i==7}});
+const C=[];let n=0;
+TX.forEach((x,ti)=>{const k=7+~~(r()*4);for(let j=0;j<k;j++){n++;const lat=x.lat+(r()-.5)*.012,lng=x.lng+(r()-.5)*.012,amb=r()<.22,nb=TX[(ti+1)%TX.length],corr=.75+r()*.23,om=.8+r()*.2,bill=.7+r()*.3,d=Math.hypot((lat-x.lat)*111e3,(lng-x.lng)*108e3),own=.35*corr+.35*om+.2*Math.max(0,1-d/3000)+.1*bill;let oth=.35*(.2+r()*.4)+.35*r()*.35+.1*(.3+r()*.4);if(amb)oth=own*(.75+r()*.3);const p=own/(own+oth),win=p>=.5,conf=Math.max(28,Math.round(Math.min(99,(win?p:1-p)*100+(amb?-8:30))));C.push({id:"0"+(9+ti%3)+"-"+String(200+ti).padStart(3,"0")+"-"+String(n).padStart(4,"0"),name:NAMES[n%16]+" "+String.fromCharCode(65+n%26)+".",lat,lng,rec:r()<.3?TX[~~(r()*12)].id:x.id,tx:win?x.id:nb.id,conf,cand:[[x.id,Math.round(p*100)],[nb.id,Math.round((1-p)*100)]].sort((a,b)=>b[1]-a[1]),sig:{corr,om,bill,d:Math.round(d)},kwh:Array.from({length:6},()=>Math.round(120+r()*260)),kw:[2,3,4,5][n%4]})}});
+const status={};let sel=C[0].id;
+function toast(m){const e=$("toast");e.textContent=m;e.style.display="block";setTimeout(()=>e.style.display="none",2200)}
+function drawMap(el,heat=false,out=false){
+ if(!el)return;
+ const W=900,H=430;
+ const pts=TX.map((x,i)=>({x:95+(i%5)*175,y:75+Math.floor(i/5)*125,d:x}));
+ const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const lines=pts.slice(1).map((p,i)=>`<line x1="${pts[i].x}" y1="${pts[i].y}" x2="${p.x}" y2="${p.y}" stroke="#9bb4bd" stroke-width="2" stroke-dasharray="5 5"/>`).join("");
+ const marks=pts.map(p=>{
+   const x=p.d,c=x.loss>=8.5?"#ef4444":x.loss>=8?"#f59e0b":"#22c55e";
+   return `${heat?`<circle cx="${p.x}" cy="${p.y}" r="${Math.min(62,25+x.lp*2)}" fill="${c}" opacity=".12"/>`:""}
+   <circle cx="${p.x}" cy="${p.y}" r="9" fill="${c}" stroke="#fff" stroke-width="2" style="cursor:pointer" onclick="alert('${esc(x.id)} — ${esc(x.name)}\\nLoss: ${x.lp}%')"/>
+   ${out&&x.out?`<circle cx="${p.x}" cy="${p.y}" r="14" fill="#111" stroke="#fff" stroke-width="3"/>`:""}
+   <text x="${p.x+13}" y="${p.y+4}" font-size="11" fill="#30464f">${esc(x.id)}</text>`;
+ }).join("");
+ el.innerHTML=`<div style="height:100%;min-height:360px;border-radius:12px;overflow:hidden;background:#e9f1f3">
+ <svg viewBox="0 0 ${W} ${H}" width="100%" height="100%">
+ <defs><pattern id="sxgrid" width="45" height="45" patternUnits="userSpaceOnUse"><path d="M45 0H0V45" fill="none" stroke="#d5e1e4"/></pattern></defs>
+ <rect width="100%" height="100%" fill="#eef5f6"/><rect width="100%" height="100%" fill="url(#sxgrid)"/>
+ <text x="25" y="28" font-size="15" font-weight="700" fill="#234d5c">SustainX Grid Intelligence Map</text>
+ <text x="25" y="48" font-size="10" fill="#66818b">Transformer loss &amp; outage visualization • Offline-safe</text>
+ ${lines}${marks}</svg></div>`;
+}
+function renderDash(){
+ const tot=TX.reduce((a,x)=>a+x.loss,0),bc=c=>TX.filter(x=>x.cause==c).reduce((a,x)=>a+x.loss,0)*RATE;
+ $("fin").innerHTML=`<div class="card alert"><div class="mf">${t("finLoss")}</div><div class="big">${inr(tot*RATE)}</div><div class="mf">${L_===0?"/ month":L_===1?"/ மாதம்":"/ माह"}</div></div>`+
+ ["theft","technical","meter"].map(c=>`<div class="card"><div class="mf">${DOT[c]} ${t(c)}</div><div class="big">${inr(bc(c))}</div><div class="mf">${L_===0?"/ month":L_===1?"/ மாதம்":"/ माह"}</div></div>`).join("");
+ const ev=x=>({theft:`${t("nightLoss")} ${x.night.toFixed(0)}%`,technical:`${t("load")} ${x.load.toFixed(0)}% · ${t("peakI2R")} ${x.peak.toFixed(0)}%`,meter:`${x.zero} ${t("zeroFlat")}`,normal:t("withinNorms")})[x.cause];
+ $("rank").innerHTML=`<tr class="mf"><th>#</th><th>DT</th><th>${t("input")}</th><th>${t("billed")}</th><th>${t("loss")}</th><th>₹/mo</th><th>${t("cause")}</th><th>${t("evidence")}</th></tr>`+
+ [...TX].sort((a,b)=>b.loss-a.loss).map((x,i)=>`<tr><td>${i+1}</td><td><b>${x.id}</b><div class="mf">${x.name}</div></td><td>${x.inp.toLocaleString()}</td><td>${x.b.toLocaleString()}</td><td><div class="bar" style="width:80px;display:inline-block"><i style="width:${Math.min(100,x.lp*3.3)}%;background:var(--red)"></i></div> ${x.lp}%</td><td>${inr(x.loss*RATE)}</td><td><span class="badge2">${DOT[x.cause]} ${t(x.cause)}</span></td><td class="mf">${ev(x)}</td></tr>`).join("");
+ drawMap($("map1"),$("heat").checked,$("out").checked);
+}
+function renderMapEngine(){const hi=C.filter(c=>c.conf>85).length,lo=C.filter(c=>c.conf<50).length,cor=C.filter(c=>c.rec!=c.tx).length;$("mstats").innerHTML=[["Consumers analysed",C.length],["High confidence (>85%)",hi],["Ambiguous (<50%)",lo],["Record errors corrected",cor]].map(([a,b])=>`<div class="card"><div class="mf">${a}</div><div class="big">${b}</div></div>`).join("");const qq=$("q").value.toLowerCase();$("clist").innerHTML=C.filter(c=>(c.name+c.id).toLowerCase().includes(qq)).map(c=>`<div class="row ${c.id==sel?"sel":""}" data-id="${c.id}"><span><b>${c.name}</b> <span class="mf">${c.id}</span></span><span>${status[c.id]=="ok"?"✓ ":status[c.id]=="field"?"🚐 ":""}${c.conf}%</span></div>`).join("");const c=C.find(x=>x.id==sel),col=c.conf>85?"var(--pri)":c.conf<50?"var(--red)":"#f59e0b",sg=(l,v)=>`<div class="mf" style="display:flex;justify-content:space-between"><span>${l}</span><span>${Math.round(v*100)}%</span></div><div class="bar" style="margin-bottom:8px"><i style="width:${v*100}%;background:#f59e0b"></i></div>`;$("detail").innerHTML=`<div class="mf">${c.id}</div><h2>${c.name}</h2><div class="card" style="background:var(--bg)"><div class="mf">${t("confidence")}</div><div class="big">Transformer ${c.tx} — ${c.conf}%</div><div class="bar" style="height:14px"><i style="width:${c.conf}%;background:${col}"></i></div>${c.rec!=c.tx?`<p style="color:#f59e0b">⚠ Records say ${c.rec} — corrected to ${c.tx}</p>`:""}</div><h3>Candidate transformers</h3>${c.cand.map(([k,v])=>`<div style="display:flex;gap:10px;align-items:center;margin-bottom:6px"><span style="width:60px">${k}</span><div class="bar" style="flex:1;height:18px"><i style="width:${v}%;background:var(--pri)"></i></div>${v}%</div>`).join("")}<h3>Evidence signals</h3>${sg("Load curve correlation",c.sig.corr)}${sg("Outage / restore timing match",c.sig.om)}${sg("Billing cycle alignment",c.sig.bill)}<p class="mf">Geo distance: <b>${c.sig.d} m</b></p><button class="btn pri" onclick="status['${c.id}']='ok';toast('Mapping confirmed');renderMapEngine()">Confirm</button> <button class="btn out" onclick="status['${c.id}']='field';toast('Field task created');renderMapEngine()">Send field engineer</button>`}
+$("clist").onclick=e=>{const r=e.target.closest(".row");if(r){sel=r.dataset.id;renderMapEngine()}};$("q").oninput=renderMapEngine;
+$("auto").onclick=()=>{let k=0;C.forEach(c=>{if(c.conf>85){status[c.id]="ok";k++}});toast(k+" mappings auto-confirmed");renderMapEngine()};$("field").onclick=()=>{let k=0;C.forEach(c=>{if(c.conf<50){status[c.id]="field";k++}});toast(k+" field tasks sent");renderMapEngine()};
+
+function bill(u){const sl=[[100,0],[200,2.35],[400,4.7],[500,6.3],[600,8.4],[800,9.45],[1000,10.5],[1e9,11.55]];let p=0,a=0;for(const[l,rt]of sl){if(u>p)a+=(Math.min(u,l)-p)*rt;p=l}return Math.round(a)}
+let liveT;function renderPortal(){clearInterval(liveT);const me=sessionStorage.me,c=C.find(x=>x.id==me);if(!c){$("pbody").innerHTML=`<form class="card" id="lf" style="max-width:420px;margin:auto"><h2>${t("portal")}</h2><p>${t("consumerNo")}<br><input id="cn" style="width:100%" placeholder="${C[0].id}"></p><p>${t("password")}<br><input id="pw" type="password" style="width:100%"></p><p id="er" style="color:var(--red)"></p><button class="btn pri" style="width:100%">${t("login")}</button><p class="mf">Demo: ${C[0].id} / demo123</p></form>`;$("lf").onsubmit=e=>{e.preventDefault();if(C.find(x=>x.id===$("cn").value.trim())&&$("pw").value==="demo123"){sessionStorage.me=$("cn").value.trim();renderPortal()}else $("er").textContent="Invalid consumer number or password"};return}const x=TX.find(y=>y.id==c.tx),last=c.kwh[5],mx=Math.max(...c.kwh);$("pbody").innerHTML=`<div style="display:flex;justify-content:space-between"><div><div class="mf">${c.id}</div><h1>${c.name}</h1></div><button class="btn out" id="lo">${t("logout")}</button></div><div class="grid"><div class="card"><div class="mf">Live load</div><div class="big" id="live">-</div><div class="mf">Sanctioned ${c.kw} kW</div></div><div class="card"><div class="mf">${t("usage")}</div><div class="big">${last} units</div><div class="mf">This month</div></div><div class="card"><div class="mf">${t("currentBill")}</div><div class="big">₹${bill(last*2).toLocaleString("en-IN")}</div><div class="mf">Bi-monthly estimate</div></div><div class="card ${x.outage?"alert":""}"><div class="mf">${t("supply")}</div><div class="big">${x.outage?"⚠ "+t("off"):"● "+t("on")}</div><div class="mf">${t("yourTx")}: ${x.id} (${c.conf}%)</div></div></div><div class="card"><h3>${t("usage")} (kWh)</h3><div style="display:flex;gap:14px;align-items:flex-end;height:200px">${c.kwh.map((v,i)=>`<div style="flex:1;text-align:center"><div class="mf">${v}</div><div style="height:${v/mx*160}px;background:var(--pri);border-radius:6px 6px 0 0"></div><div class="mf">${["Apr","May","Jun","Jul","Aug","Sep"][i]}</div></div>`).join("")}</div></div><div id="map2" class="leafmap" style="height:360px"></div>`;$("lo").onclick=()=>{delete sessionStorage.me;renderPortal()};const tick=()=>{const e=$("live");if(e)e.textContent=(x.outage?0:(.4+Math.random()*c.kw*.5).toFixed(2))+" kW"};tick();liveT=setInterval(tick,2000);drawMap($("map2"),false,true,c.id)}
+
+
+const UI_TEXT={
+"Unexplained loss":["Unexplained loss","விளக்கமற்ற இழப்பு","अस्पष्ट हानि"],
+"Monthly shutdown":["Monthly shutdown","மாதாந்திர மின்தடை","मासिक बिजली कटौती"],
+"Service availability":["Service availability","சேவை கிடைக்கும் நிலை","सेवा उपलब्धता"],
+"Mapping confidence":["Mapping confidence","மேப்பிங் நம்பகத்தன்மை","मैपिंग विश्वसनीयता"],
+"Synthetic network estimate":["Synthetic network estimate","செயற்கை நெட்வொர்க் மதிப்பீடு","सिंथेटिक नेटवर्क अनुमान"],
+"Average monitored area":["Average monitored area","கண்காணிக்கப்படும் பகுதியின் சராசரி","औसत निगरानी क्षेत्र"],
+"Synthetic availability index":["Synthetic availability index","செயற்கை சேவை கிடைக்கும் குறியீடு","सिंथेटिक उपलब्धता सूचकांक"],
+"Consumer → transformer":["Consumer → transformer","நுகர்வோர் → டிரான்ஸ்பார்மர்","उपभोक्ता → ट्रांसफार्मर"],
+"38-district network view":["38-district network view","38 மாவட்ட மின் வலையமைப்பு காட்சி","38-जिला नेटवर्क दृश्य"],
+"District":["District","மாவட்டம்","जिला"],
+"Signal":["Signal","நிலை","सिग्नल"],
+"Stable":["Stable","சீரானது","स्थिर"],
+"Watch":["Watch","கவனிப்பு","निगरानी"],
+"Investigate":["Investigate","ஆய்வு தேவை","जांच आवश्यक"],
+"Input energy":["Input energy","உள்ளீட்டு ஆற்றல்","इनपुट ऊर्जा"],
+"Billed energy":["Billed energy","பில் செய்யப்பட்ட ஆற்றல்","बिल की गई ऊर्जा"],
+"Consumers":["Consumers","நுகர்வோர்","उपभोक्ता"],
+"Network signal":["Network signal","நெட்வொர்க் நிலை","नेटवर्क सिग्नल"],
+"Live Grid Map":["Live Grid Map","நேரடி மின் கட்டமைப்பு வரைபடம்","लाइव ग्रिड मानचित्र"],
+"Loss heatmap":["Loss heatmap","இழப்பு வெப்ப வரைபடம்","हानि हीटमैप"],
+"Live outages":["Live outages","நேரடி மின்தடைகள்","लाइव आउटेज"],
+"Transformers ranked by unexplained loss":["Transformers ranked by unexplained loss","விளக்கமற்ற இழப்பின்படி டிரான்ஸ்பார்மர்கள்","अस्पष्ट हानि के अनुसार ट्रांसफार्मर"],
+"Evidence":["Evidence","ஆதாரம்","साक्ष्य"],
+"Night loss":["Night loss","இரவு இழப்பு","रात्रि हानि"],
+"Load":["Load","சுமை","लोड"],
+"zero/flat readings":["zero/flat readings","பூஜ்யம்/மாறாத ரீடிங்குகள்","शून्य/स्थिर रीडिंग"],
+"Within norms":["Within norms","சாதாரண வரம்பில்","मानक सीमा में"],
+"Consumers analysed":["Consumers analysed","பகுப்பாய்வு செய்யப்பட்ட நுகர்வோர்","विश्लेषित उपभोक्ता"],
+"High confidence (>85%)":["High confidence (>85%)","அதிக நம்பகத்தன்மை (>85%)","उच्च विश्वसनीयता (>85%)"],
+"Ambiguous (<50%)":["Ambiguous (<50%)","தெளிவற்றது (<50%)","अस्पष्ट (<50%)"],
+"Record errors corrected":["Record errors corrected","பதிவு பிழைகள் சரிசெய்யப்பட்டன","रिकॉर्ड त्रुटियां सुधारी गईं"],
+"Candidate transformers":["Candidate transformers","சாத்தியமான டிரான்ஸ்பார்மர்கள்","संभावित ट्रांसफार्मर"],
+"Evidence signals":["Evidence signals","ஆதார சிக்னல்கள்","साक्ष्य संकेत"],
+"Load curve correlation":["Load curve correlation","சுமை வளைவு தொடர்பு","लोड कर्व सहसंबंध"],
+"Outage / restore timing match":["Outage / restore timing match","மின்தடை / மீட்பு நேர பொருத்தம்","आउटेज / बहाली समय मिलान"],
+"Billing cycle alignment":["Billing cycle alignment","பில்லிங் சுழற்சி பொருத்தம்","बिलिंग चक्र संरेखण"],
+"Geo distance":["Geo distance","புவியியல் தூரம்","भौगोलिक दूरी"],
+"Confirm":["Confirm","உறுதி செய்","पुष्टि करें"],
+"Send field engineer":["Send field engineer","களப் பொறியாளரை அனுப்பு","फील्ड इंजीनियर भेजें"],
+"Power ON":["Power ON","மின்சாரம் உள்ளது","बिजली चालू"],
+"Outage":["Outage","மின்தடை","बिजली बंद"],
+"Live load":["Live load","நேரடி சுமை","लाइव लोड"],
+"Sanctioned":["Sanctioned","அனுமதிக்கப்பட்ட","स्वीकृत"],
+"This month":["This month","இந்த மாதம்","इस महीने"],
+"Bi-monthly estimate":["Bi-monthly estimate","இருமாத மதிப்பீடு","द्विमासिक अनुमान"],
+"Usage":["Usage","பயன்பாடு","उपयोग"],
+"Transformer":["Transformer","டிரான்ஸ்பார்மர்","ट्रांसफार्मर"],
+"Start":["Start","தொடக்கம்","प्रारंभ"],
+"Duration":["Duration","கால அளவு","अवधि"],
+"Affected":["Affected","பாதிக்கப்பட்டோர்","प्रभावित"],
+"Type":["Type","வகை","प्रकार"],
+"Cause":["Cause","காரணம்","कारण"],
+"Status":["Status","நிலை","स्थिति"],
+"Area":["Area","பகுதி","क्षेत्र"],
+"Unplanned":["Unplanned","திட்டமிடப்படாத","अनियोजित"],
+"Maintenance":["Maintenance","பராமரிப்பு","रखरखाव"],
+"Scheduled":["Scheduled","திட்டமிடப்பட்டது","निर्धारित"],
+"Feeder fault":["Feeder fault","ஃபீடர் கோளாறு","फीडर खराबी"],
+"Feeder work":["Feeder work","ஃபீடர் பணி","फीडर कार्य"],
+"Transformer trip":["Transformer trip","டிரான்ஸ்பார்மர் டிரிப்","ट्रांसफार्मर ट्रिप"],
+"Cable work":["Cable work","கேபிள் பணி","केबल कार्य"],
+"Protection trip":["Protection trip","பாதுகாப்பு டிரிப்","सुरक्षा ट्रिप"],
+"Substation work":["Substation work","சப்ஸ்டேஷன் பணி","सबस्टेशन कार्य"],
+"Restored":["Restored","மீட்டெடுக்கப்பட்டது","बहाल"],
+"Open":["Open","திறந்துள்ளது","खुला"],
+"Current bill":["Current bill","தற்போதைய கட்டணம்","वर्तमान बिल"],
+"Your consumption":["Your consumption","உங்கள் மின் பயன்பாடு","आपकी खपत"],
+"Your transformer":["Your transformer","உங்கள் டிரான்ஸ்பார்மர்","आपका ट्रांसफार्मर"]
+};
+function translateVisibleText(){
+  document.querySelectorAll("body *").forEach(el=>{
+    if(el.children.length===0){
+      const raw=el.textContent.trim();
+      const v=UI_TEXT[raw];
+      if(v) el.textContent=v[L_];
+    }
+  });
+}
+function applyTranslations(){
+  // Navigation
+  document.querySelectorAll("[data-page]").forEach(a=>{
+    const key=a.dataset.page;
+    if(D[key]) a.textContent=t(key);
+  });
+
+  // Login portal
+  const lt=$("loginType"), uid=$("uid"), pwd=$("pwd");
+  if(lt){
+    const vals=L_===0
+      ? ["Employee / Administrator","Consumer","Field Engineer"]
+      : L_===1
+      ? ["பணியாளர் / நிர்வாகி","நுகர்வோர்","களப் பொறியாளர்"]
+      : ["कर्मचारी / प्रशासक","उपभोक्ता","फील्ड इंजीनियर"];
+    [...lt.options].forEach((o,i)=>o.textContent=vals[i]);
+  }
+  const map={
+    ".portal-label":["OFFICIAL-STYLE DEMO PORTAL","அதிகாரப்பூர்வ பாணி டெமோ போர்டல்","आधिकारिक-शैली डेमो पोर्टल"],
+    ".portal-badge":["SUSTAINX ENERGY INTELLIGENCE","SUSTAINX ஆற்றல் நுண்ணறிவு","SUSTAINX ऊर्जा इंटेलिजेंस"],
+    ".portal-welcome h1":["Welcome to<br><span>SustainX</span>","<span>SustainX</span>-க்கு வரவேற்கிறோம்","<span>SustainX</span> में आपका स्वागत है"],
+    ".portal-welcome p":[
+      "Unified distribution intelligence for network monitoring, energy-loss analysis, outage management and consumer services.",
+      "மின் வலையமைப்பு கண்காணிப்பு, ஆற்றல் இழப்பு பகுப்பாய்வு, மின்தடை மேலாண்மை மற்றும் நுகர்வோர் சேவைகளுக்கான ஒருங்கிணைந்த தளம்.",
+      "नेटवर्क मॉनिटरिंग, ऊर्जा-हानि विश्लेषण, आउटेज प्रबंधन और उपभोक्ता सेवाओं के लिए एकीकृत प्लेटफ़ॉर्म."
+    ],
+    ".card-title h2":["Portal Login","போர்டல் உள்நுழைவு","पोर्टल लॉगिन"],
+    ".card-title p":["Sign in to access SustainX services","SustainX சேவைகளை அணுக உள்நுழைக","SustainX सेवाओं तक पहुँचने के लिए साइन इन करें"],
+    ".utility-primary":["LOGIN","உள்நுழை","लॉगिन"],
+    ".demo-box b":["Demo Access","டெமோ அணுகல்","डेमो एक्सेस"],
+    ".demo-disclaimer":[
+      "This is a prototype interface inspired by public utility-portal layouts. It is not an official TANGEDCO/TNPDCL website.",
+      "இது பொது மின்சார போர்டல் வடிவமைப்பை அடிப்படையாகக் கொண்ட முன்மாதிரி. இது அதிகாரப்பூர்வ TANGEDCO/TNPDCL இணையதளம் அல்ல.",
+      "यह सार्वजनिक उपयोगिता पोर्टल लेआउट से प्रेरित प्रोटोटाइप है। यह आधिकारिक TANGEDCO/TNPDCL वेबसाइट नहीं है."
+    ]
+  };
+  Object.entries(map).forEach(([sel,vals])=>{
+    const e=document.querySelector(sel); if(e) e.innerHTML=vals[L_];
+  });
+
+  const labels=document.querySelectorAll(".utility-login-card>label");
+  const labelText=L_===0?["Login Type","User ID / Consumer Number","Password"]:L_===1?["உள்நுழைவு வகை","பயனர் ID / நுகர்வோர் எண்","கடவுச்சொல்"]:["लॉगिन प्रकार","यूज़र ID / उपभोक्ता संख्या","पासवर्ड"];
+  labels.forEach((e,i)=>{if(labelText[i])e.textContent=labelText[i]});
+
+  if(uid) uid.placeholder=L_===0?"Enter User ID":L_===1?"பயனர் ID உள்ளிடவும்":"यूज़र ID दर्ज करें";
+  if(pwd) pwd.placeholder=L_===0?"Enter password":L_===1?"கடவுச்சொல்லை உள்ளிடவும்":"पासवर्ड दर्ज करें";
+
+  const remember=document.querySelector(".remember");
+  if(remember) remember.childNodes[remember.childNodes.length-1].textContent=L_===0?" Remember me":L_===1?" என்னை நினைவில் வைத்திரு":" मुझे याद रखें";
+  const forgot=document.querySelector(".login-options a");
+  if(forgot) forgot.textContent=L_===0?"Forgot Password?":L_===1?"கடவுச்சொல் மறந்துவிட்டதா?":"पासवर्ड भूल गए?";
+
+  // Language selector itself
+  const lang=$("lang");
+  if(lang) lang.value=String(L_);
+  translateVisibleText();
+}
+
+let currentPage="state";
+function showPage(page){
+ currentPage=page;document.querySelectorAll(".page").forEach(e=>e.classList.toggle("hide",e.id!==page));document.querySelectorAll("[data-page]").forEach(a=>a.classList.toggle("on",a.dataset.page===page));
+ if(page==="dashboard"){renderDash();translateVisibleText();}
+ if(page==="mapping"){renderMapEngine();translateVisibleText();}
+ if(page==="portal"){renderPortal();translateVisibleText();}
+ translateVisibleText();
+ window.scrollTo({top:0,behavior:"smooth"});
+ setTimeout(()=>{
+   document.querySelectorAll(".map").forEach(el=>{
+     if(el._leaflet_id && el.__sustainMap) el.__sustainMap.invalidateSize();
+   });
+ },180);
+}
+document.querySelectorAll("[data-page]").forEach(a=>a.onclick=()=>showPage(a.dataset.page));
+$("heat").onchange=$("out").onchange=()=>{if(currentPage==="dashboard")renderDash()};
+$("lang").value=String(L_);
+$("lang").onchange=()=>{
+  L_=Number($("lang").value);
+  localStorage.lang=String(L_);
+  applyTranslations();
+  if(currentPage==="state")renderDistricts($("districtSearch").value);
+  if(currentPage==="dashboard")renderDash();
+  if(currentPage==="mapping")renderMapEngine();
+  if(currentPage==="portal")renderPortal();
+};
+
+applyTranslations();renderDistricts();drawNodes();selectArea("Anna Nagar");showPage("state");
+
+</script>
+</body>
+</html>
